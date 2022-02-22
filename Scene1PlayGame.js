@@ -275,6 +275,7 @@ class Scene1PlayGame extends Phaser.Scene {
             repeat: -1,
         });
         this.gameOver = new AssetStatic(this, this.game.scale.width / 2, this.game.scale.height / 2, "sprGameOver").setAlpha(0).setScale(0.1).setDepth(3).setScrollFactor(0);
+        this.hand = new AssetStatic(this, this.game.scale.width / 1.7, this.game.scale.height/1.4, "sprHand").setAlpha(0).setScale(0.1).setDepth(4).setScrollFactor(0).setRotation(25);
         this.gameWin = new AssetStatic(this, this.game.scale.width / 2, this.game.scale.height / 2, "sprGameWin").setAlpha(0).setScale(0.1).setDepth(3).setScrollFactor(0);
         disableBgSound = new AssetStatic(this, 40, 40, "sprMute").setFrame(0).setDepth(3).setInteractive().setScrollFactor(0).setVisible(false);
         disableBgSound.on("pointerdown", function (event) {
@@ -418,6 +419,7 @@ class Scene1PlayGame extends Phaser.Scene {
         this.tapToPlay.setPosition(width / 2, height / 2);
         this.gameWin.setPosition(width / 2, height / 2);
         this.gameOver.setPosition(width / 2, height / 2);
+        this.hand.setPosition(width / 1.7, height / 1.4);
         this.turnLeft.setPosition(width / 12, height - 45);
         this.turnRight.setPosition(width / 12 + 90, height - 45);
         this.jump.setPosition(width / 1.09, height - 100);
@@ -527,7 +529,7 @@ class Scene1PlayGame extends Phaser.Scene {
                 player.body.setImmovable(true);
             });
             isPlayerDead = true;
-            player.onFailure(this.gameOver);
+            player.onFailure(this.gameOver, this.hand);
             endGame = true;
         }
     }
@@ -543,7 +545,7 @@ class Scene1PlayGame extends Phaser.Scene {
                 player.play("sprPlayerDeadMotion");
                 player.body.setImmovable(true);
                 isPlayerDead = true;
-                player.onFailure(this.gameOver);
+                player.onFailure(this.gameOver, this.hand);
                 endGame = true;
             } else {
                 this.playSound("standOnEnemySound");
@@ -575,7 +577,7 @@ class Scene1PlayGame extends Phaser.Scene {
                     enemy.body.velocity.y = 0;
                     enemy.body.setImmovable(true);
                     isPlayerDead = true;
-                    player.onFailure(this.gameOver);
+                    player.onFailure(this.gameOver, this.hand);
                     endGame = true;
                 }
             }

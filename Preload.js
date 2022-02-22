@@ -1,5 +1,5 @@
 function gameStart() { }
-var nAssets = 20;
+var nAssets = 21;
 var nLoaded = 0;
 var sprMovementPlayerImg = new Image(),
     sprCoinImg = new Image(),
@@ -14,6 +14,7 @@ var sprMovementPlayerImg = new Image(),
     sprBossImg = new Image(),
     sprSpringsImg = new Image(),
     sprMuteImg = new Image();
+    sprHandImg = new Image();
 var isControllable = true,
     isTurnRight = false,
     isTurnLeft = false,
@@ -212,6 +213,12 @@ class Preload extends Phaser.Scene {
             frameRate: 10,
             repeat: -1,
         });
+        this.anims.create({
+            key: "sprHandMotion",
+            frames: this.anims.generateFrameNumbers("sprHand"),
+            frameRate: 7,
+            repeat: -1,
+        });
 
         this.cameras.main.fadeOut(0, 0, 0, 0);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
@@ -376,6 +383,19 @@ class Preload extends Phaser.Scene {
             }
         };
         sprBonusPointImg.src = sprBlockCoinB64;
+
+        sprHandImg.onload = () => {
+            this.textures.addSpriteSheet("sprHand", sprHandImg, {
+                frameWidth: 30,
+                frameHeight: 264/7,
+            });
+            nLoaded++;
+            if (nLoaded >= nAssets) {
+                var actualCreate = this.createGameObjects.bind(this);
+                actualCreate();
+            }
+        };
+        sprHandImg.src = sprHandB64;
     }
 
     update() { }
